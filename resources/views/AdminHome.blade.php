@@ -17,11 +17,9 @@
             <h5><span class="label label-info">店铺</span></h5>
             <select name="shop" class="form-control">
             	<option @if(old('shop') == 'all') selected="selected" @endif value="all">所有店铺</option>
-            	<option @if(old('shop') == 'shop 1') selected="selected" @endif value="shop 1">店铺1</option>
-            	<option @if(old('shop') == 'shop 2') selected="selected" @endif value="shop 2">店铺2</option>
-            	<option @if(old('shop') == 'shop 3') selected="selected" @endif value="shop 3">店铺3</option>
-            	<option @if(old('shop') == 'shop 4') selected="selected" @endif value="shop 4">店铺4</option>
-            	<option @if(old('shop') == 'shop 5') selected="selected" @endif value="shop 5">店铺5</option>
+             	@foreach (Config::get('constants.SHOP') as $k=>$v)
+             		<option @if(old('shop') == $k) selected="selected" @endif value="{{ $k }}">{{ $v }}</option>
+             	@endforeach
             </select>
          </div>
 		<div class="col-sm-4">
@@ -58,9 +56,9 @@
             <h5><span class="label label-info">状态</span></h5>
             <select name="status" class="form-control">
             	<option @if(old('status') == 'all') selected="selected" @endif value="all">所有</option>
-            	<option @if(old('status') == '1') selected="selected" @endif value="1">状态1</option>
-            	<option @if(old('status') == '2') selected="selected" @endif value="2">状态2</option>
-            	<option @if(old('status') == '3') selected="selected" @endif value="3">状态3</option>
+             	@foreach (Config::get('constants.BOOK_STATUS') as $k=>$v)
+             		<option @if(old('status') == $k) selected="selected" @endif value="{{ $k }}">{{ $v }}</option>
+             	@endforeach
             </select>
          </div>
 		<div class="col-sm-4">
@@ -109,25 +107,25 @@
         </form>
 		</td>
 		<td>{{ $book->id }}</td>
-		<td class="num1">{{ $book->shop }}</td>
+		<td class="num1"><?php $shop_arr = Config::get('constants.SHOP'); echo isset($shop_arr[$book->shop])?$shop_arr[$book->shop]:'';?></td>
 		<td>{{ $book->come_date }}</td>
-		<td class="num1">{{ $book->come_time }}</td>
+		<td class="num1"><?php $shiduan_arr = Config::get('constants.SHIDUAN'); echo isset($shiduan_arr[$book->come_time])?$shiduan_arr[$book->come_time]:'未知时段';?></td>
 		<td>{{ $book->name }}</td>
 		<td class="num1">{{ $book->tel }}</td>
 		<td>{{ $book->userid }}</td>
-		<td class="num1">{{ $book->come_product }}</td>
-		<td>{{ $book->come_for }}</td>
-		<td class="num1">{{ $book->is_xiaofei }}</td>
-		<td>{{ $book->status }}</td>
+		<td class="num1"><?php $product = Config::get('constants.PRODUCT'); echo isset($product[$book->come_product])?$product[$book->come_product]:'未知商品';?></td>
+		<td><?php $mudi_arr = Config::get('constants.MUDI'); echo isset($mudi_arr[$book->come_for])?$mudi_arr[$book->come_for]:'未知目的';?></td>
+		<td class="num1"><?php $xiaofei_arr = Config::get('constants.XIAOFEI'); echo isset($xiaofei_arr[$book->is_xiaofei])?$xiaofei_arr[$book->is_xiaofei]:'未知状态';?></td>
+		<td><?php $status_arr = Config::get('constants.BOOK_STATUS'); echo isset($status_arr[$book->status])?$status_arr[$book->status]:'未知状态';?></td>
 		<td class="num1">{{ $book->status_opt }}</td>
-		<td>{{ $book->status_time }}</td>
+		<td>{{ date('Y-m-d H:i:s',$book->status_time+0) }}</td>
 		<td class="num1">{{ $book->status_note }}</td>
 		<td>{{ $book->lixing_opt }}</td>
-		<td class="num1">{{ $book->lixing_time }}</td>
-		<td>{{ $book->lixing_note }}</td>
+		<td class="num1">{{ $book->lixing_note }}</td>
+		<td>{{ date('Y-m-d H:i:s',$book->lixing_time+0) }}</td>
 		<td class="num1">{{ $book->not_opt }}</td>
 		<td>{{ $book->not_note }}</td>
-		<td class="num1">{{ $book->not_time }}</td>
+		<td class="num1">{{ date('Y-m-d H:i:s',$book->not_time+0) }}</td>
 	</tr>
 
 	@endforeach

@@ -53,8 +53,8 @@
 							<label class="col-md-4 control-label">角色</label>
 							<div class="col-md-6">
 								<select class="select" name="role">
-								@foreach($roles->all() as $role)
 									<option value="">请选择</option>
+								@foreach($roles->all() as $role)
 									<option value="{{ $role->name }}">{{ $role->display_name }}</option>
 								@endforeach
 								</select>

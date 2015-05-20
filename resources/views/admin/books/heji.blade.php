@@ -16,12 +16,10 @@
 		<div class="col-sm-4">
             <h5><span class="label label-info">店铺</span></h5>
             <select name="shop" class="form-control">
-            	<option @if(old('shop') == 'all') selected="selected" @endif value="all">所有店铺</option>
-            	<option @if(old('shop') == 'shop 1') selected="selected" @endif value="shop 1">店铺1</option>
-            	<option @if(old('shop') == 'shop 2') selected="selected" @endif value="shop 2">店铺2</option>
-            	<option @if(old('shop') == 'shop 3') selected="selected" @endif value="shop 3">店铺3</option>
-            	<option @if(old('shop') == 'shop 4') selected="selected" @endif value="shop 4">店铺4</option>
-            	<option @if(old('shop') == 'shop 5') selected="selected" @endif value="shop 5">店铺5</option>
+             	<option value="all">所有店铺</option>
+             	@foreach (Config::get('constants.SHOP') as $k=>$v)
+             		<option value="{{ $k }}">{{ $v }}</option>
+             	@endforeach
             </select>
          </div>
 		<div class="col-sm-4">
@@ -73,7 +71,7 @@
 	@foreach ($books as $book)
 	<tr>
 		<td>{{ $book->come_date2 }}</td>
-		<td>{{ $book->shop }}</td>
+		<td><?php $status_arr = Config::get('constants.SHOP'); echo isset($status_arr[$book->shop])?$status_arr[$book->shop]:'';?></td>
 		<td>{{ $book->allbook }}</td>
 		<td>{{ $book->allcome }}</td>
 		<td>{{ sprintf("%.2f", $book->allcome/$book->allbook*100) }} %</td>
@@ -81,10 +79,39 @@
 <?php
 	$allpro = explode('|',$book->all_pro,4);
 	//echo '<pre>';print_r($allpro);
+	$product = Config::get('constants.PRODUCT');
 ?>
-		<td><?php echo isset($allpro['0']) ? $allpro['0'] : '';?></td>
-		<td><?php echo isset($allpro['1']) ? $allpro['1'] : '';?></td>
-		<td><?php echo isset($allpro['2']) ? $allpro['2'] : '';?></td>
+
+		<td>
+			<?php 
+				//echo isset($allpro['0']) && isset($product[$allpro['0']]) ? $product[$allpro['0']] : '未知商品';
+				if(isset($allpro['0'])){
+					$top0 = explode(',', $allpro['0']);
+					echo isset($product[$top0['0']])?$product[$top0['0']]:'未知商品';
+					echo ':',$top0['1'];
+				}
+			?>
+		</td>
+		<td>
+			<?php 
+				//echo isset($allpro['0']) && isset($product[$allpro['0']]) ? $product[$allpro['0']] : '未知商品';
+				if(isset($allpro['1'])){
+					$top1 = explode(',', $allpro['1']);
+					echo isset($product[$top1['0']])?$product[$top1['0']]:'未知商品';
+					echo ':',$top1['1'];
+				}
+			?>
+		</td>
+		<td>
+			<?php 
+				//echo isset($allpro['0']) && isset($product[$allpro['0']]) ? $product[$allpro['0']] : '未知商品';
+				if(isset($allpro['2'])){
+					$top2 = explode(',', $allpro['0']);
+					echo isset($product[$top2['0']])?$product[$top2['0']]:'未知商品';
+					echo ':',$top2['1'];
+				}
+			?>
+		</td>
 	</tr>
 	@endforeach
 		

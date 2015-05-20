@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="_token" content="{{ csrf_token() }}"/>
 	<title>Turmir</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
@@ -41,8 +42,10 @@
 							<li><a href="{{ url('/admin/books/heji') }}">预约基础信息</a></li>
 							<li><a href="{{ url('/admin/books/compare') }}">预约商品对比</a></li>
 							<li><a href="{{ url('/admin/books/chart') }}">预约时段曲线图</a></li>
+							<!--<li><a href="{{ url('/admin/products') }}">商品库</a></li>-->
 						</ul>
 					</li>
+					<?php if(Entrust::can('users-manager')){ ?>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">用户角色 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
@@ -51,6 +54,7 @@
 							<li><a href="{{ url('/admin/permissions') }}">权限管理</a></li>
 						</ul>
 					</li>
+					<?php } ?>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -61,6 +65,7 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
+								<li><a href="{{ url('/admin/member/editself') }}">修改密码</a></li>
 								<li><a href="{{ url('/auth/logout') }}">退出</a></li>
 							</ul>
 						</li>
@@ -75,5 +80,17 @@
 	<!-- Scripts -->
 	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+<script>
+
+$("input[type='text']").change(function(){
+  $(this).css("border-left","3px solid red");
+});
+$("textarea").change(function(){
+  $(this).css("border-left","3px solid red");
+});
+$("select").change(function(){
+  $(this).css("border-left","3px solid red");
+});
+</script>
 </body>
 </html>

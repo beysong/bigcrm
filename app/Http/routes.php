@@ -15,6 +15,7 @@
 Route::get('/', 'Auth\AuthController@getLogin');
 
 Route::get('home', 'HomeController@index');
+Route::get('books/outstore', 'Admin\BooksController@outstore');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
@@ -25,13 +26,21 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
+
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function()
 {
   Route::get('/', 'AdminHomeController@index');
   Route::get('books/heji', 'BooksController@heji');
   Route::get('books/compare', 'BooksController@compare');
   Route::get('books/chart', 'BooksController@chart');
-  Route::get('books/outstore', 'BooksController@outstore');
+  Route::get('member/editself', 'UsersController@editself');
+  Route::put('member/editself', 'UsersController@editself');
+  
+  Route::post('books/modify_status', 'BooksController@modifyStatus');
+  Route::post('books/modify_lixing', 'BooksController@modifyLixing');
+  Route::post('books/modify_not', 'BooksController@modifyNot');
+  
+  Route::resource('products', 'ProductController');
   
   Route::resource('books', 'BooksController');
   
@@ -40,7 +49,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
   Route::resource('roles', 'RolesController');
   
   Route::resource('permissions', 'PermissionsController');
-  
   
 });
 
@@ -70,3 +78,4 @@ Route::filter('manage_permissions', function()
     }
 });
 Route::when('admin/permissions*', 'manage_permissions');
+

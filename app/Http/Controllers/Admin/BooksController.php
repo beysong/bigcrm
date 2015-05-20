@@ -63,17 +63,21 @@ class BooksController extends Controller {
 		$book->tel = Input::get('come_tel');
 		$book->come_date = Input::get('come_date');
 		$book->come_time = Input::get('come_shiduan');
+		$book->shop = Input::get('come_shop');
 		$book->come_for = Input::get('come_mudi');
+		if(Input::get('come_product') != ''){
+			$book->come_product = Input::get('come_product');
+		}
 		$callback = Input::get("callback");
 		if($book->save()){
-			$message="成功";
+			$message=" 预约成功";
 		}else{
-			$message="失败";
+			$message="预约失败";
 		}
 			//return json_encode($callback);
 			return \Response::json( $message )->setCallback( Input::get('callback') );
 	}
-	}
+}
 
 	/**
 	 * Display the specified resource.
@@ -118,20 +122,113 @@ class BooksController extends Controller {
 		$book->tel = Input::get('tel');
 		$book->is_xiaofei = Input::get('is_xiaofei');
 		$book->status = Input::get('status');
+		
 		$book->status_note = Input::get('status_note');
+		$book->status_opt = Input::get('status_opt');
+		$book->status_time = Input::get('status_time');
+		$book->status_score = Input::get('status_score');
 		$book->lixing_note = Input::get('lixing_note');
+		$book->lixing_opt = Input::get('lixing_opt');
+		$book->lixing_time = Input::get('lixing_time');
+		$book->lixing_score = Input::get('lixing_score');
 		$book->not_note = Input::get('not_note');
+		$book->not_opt = Input::get('not_opt');
+		$book->not_time = Input::get('not_time');
+		$book->not_score = Input::get('not_score');
 		$book->come_product = Input::get('come_product');
 		
-		$book->status_opt = Auth::user()->email;
-
+		//$book->status_opt = Auth::user()->email;
 		if ($book->save()) {
-			return Redirect::to('admin');
+			if(Input::has('redirect_type') && Input::get('redirect_type') == 're'){
+				return Redirect::to('/admin');
+			}else{
+				return Redirect::back()->withInput()->with('success', '保存成功');
+			}
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}
 	}
+	
+	/**
+	 *	ajax单独修改状态备注
+	 */
+	public function modifyStatus(Request $request)
+	{
+	//	$data = $request->input();
+		//dump($_POST['id']);
+	    $book = Book::find(Input::get('id'));
+	    
+	    $book->status_note = Input::get('status_note');
+	    $book->status_opt = Auth::user()->email;
+	    $book->status_time = date(time());
+	    if ($book->save()) {
+	        return response()->json(array(
+	            'status' => 1,
+	            'msg' => '修改成功',
+	        ));
+	    } else {
+	        //return Redirect::back()->withInput()->withErrors('保存失败！');
+	        return response()->json(array(
+	            'status' => 0,
+	            'msg' => '修改失败',
+	        ));
+	    }
 
+	}
+	
+	/**
+	 *	ajax单独修改状态备注
+	 */
+	public function modifyLixing(Request $request)
+	{
+	//	$data = $request->input();
+		//dump($_POST['id']);
+	    $book = Book::find(Input::get('id'));
+	    
+	    $book->lixing_note = Input::get('lixing_note');
+	    $book->lixing_opt = Auth::user()->email;
+	    $book->lixing_time = date(time());
+	    if ($book->save()) {
+	        return response()->json(array(
+	            'status' => 1,
+	            'msg' => '修改成功',
+	        ));
+	    } else {
+	        //return Redirect::back()->withInput()->withErrors('保存失败！');
+	        return response()->json(array(
+	            'status' => 0,
+	            'msg' => '修改失败',
+	        ));
+	    }
+
+	}
+	
+	/**
+	 *	ajax单独修改状态备注
+	 */
+	public function modifyNot(Request $request)
+	{
+	//	$data = $request->input();
+		//dump($_POST['id']);
+	    $book = Book::find(Input::get('id'));
+	    
+	    $book->not_note = Input::get('not_note');
+	    $book->not_opt = Auth::user()->email;
+	    $book->not_time = date(time());
+	    if ($book->save()) {
+	        return response()->json(array(
+	            'status' => 1,
+	            'msg' => '修改成功',
+	        ));
+	    } else {
+	        //return Redirect::back()->withInput()->withErrors('保存失败！');
+	        return response()->json(array(
+	            'status' => 0,
+	            'msg' => '修改失败',
+	        ));
+	    }
+
+	}
 	/**
 	 * 每天店铺信息统计
 	 */

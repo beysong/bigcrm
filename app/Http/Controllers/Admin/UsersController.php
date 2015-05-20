@@ -95,6 +95,18 @@ class UsersController extends Controller {
 		
 		return view('admin.users.edit')->withRoles($roles);
 	}
+	public function editself(Request $request)
+	{
+		$user = Auth::user();
+		if(Input::has('password')){
+			$users = Auth::user();
+			if(!empty(Input::get('password')) && !empty(Input::get('password_confirmation'))){
+				$user->password = \Hash::make(Input::get('password'));
+			}
+			$user->save();
+		}
+		return view('admin.users.editself')->withUselfs($user);
+	}
 
 	/**
 	 * Update the specified resource in storage.

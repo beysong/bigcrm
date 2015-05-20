@@ -16,12 +16,9 @@
 		<div class="col-sm-4">
             <h5><span class="label label-info">店铺</span></h5>
             <select name="shop[]" class="form-control" multiple=true>
-            	<option @if(in_array('all',old('shop') == ''?array():old('shop'))) selected="selected" @endif value="all">所有店铺</option>
-            	<option @if(in_array('shop 1',old('shop') == ''?array():old('shop'))) selected="selected" @endif value="shop 1">店铺1</option>
-            	<option @if(in_array('shop 2',old('shop') == ''?array():old('shop'))) selected="selected" @endif value="shop 2">店铺2</option>
-            	<option @if(in_array('shop 3',old('shop') == ''?array():old('shop'))) selected="selected" @endif value="shop 3">店铺3</option>
-            	<option @if(in_array('shop 4',old('shop') == ''?array():old('shop'))) selected="selected" @endif value="shop 4">店铺4</option>
-            	<option @if(in_array('shop 5',old('shop') == ''?array():old('shop'))) selected="selected" @endif value="shop 5">店铺5</option>
+             	@foreach (Config::get('constants.SHOP') as $k=>$v)
+             		<option @if( in_array( $k, !empty(Input::old('shop'))?Input::old('shop'):array() ) ) selected="selected" @endif  value="{{ $k }}">{{ $v }}</option>
+             	@endforeach
             </select>
          </div>
 		<div class="col-sm-4">
@@ -61,19 +58,26 @@
 <table width="100%">
 	<tr>
 		<th width="100">商品名称</th>
-		<?php if(!empty($books)){
+		<?php 
+		$shop_arr = Config::get('constants.SHOP'); 
+		if(!empty($books)){
 			$allshop2 = explode('|',$books[0]->all_shop);
 			foreach($allshop2 as $k=>$v){
 		?>
 	
-			<th width="100"><?php $shop = explode(',',$v);echo $shop[0]; ?></th>
+			<th width="100"><?php $shop = explode(',',$v);echo isset($shop_arr[$shop[0]])?$shop_arr[$shop[0]]:'未知店铺'; ?></th>
 				
 		<?php }} ?>
 		
 	</tr>
 	@foreach ($books as $book)
 	<tr>
-		<td>{{ $book->come_product }}</td>
+		<td>
+			<?php 
+				$product = Config::get('constants.PRODUCT');
+				echo isset($product[$book->come_product])?$product[$book->come_product]:'未知商品'; 
+			?>
+		</td>
 		<?php
 			$allshop = explode('|',$book->all_shop);
 			//echo '<pre>';print_r($allpro);

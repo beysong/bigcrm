@@ -35,9 +35,9 @@ class AdminHomeController extends Controller {
 		Input::flash();
 		
 		if(trim($start_date) != '' && trim($end_date) != ''){
-			$allBooks = Book::where($where)->whereBetween('come_date', [$start_date, $end_date])->paginate(50);
+			$allBooks = Book::where($where)->whereBetween('come_date', [$start_date, $end_date])->orderBy('come_date', 'desc')->paginate(50);
 		}else{
-			$allBooks = Book::where($where)->paginate(50);
+			$allBooks = Book::where($where)->orderBy('come_date', 'desc')->paginate(50);
 		}
 		//echo '<pre>';print_r($where);
 		

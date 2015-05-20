@@ -16,11 +16,9 @@
 		<div class="col-sm-4">
             <h5><span class="label label-info">店铺</span></h5>
             <select name="shop" class="form-control">
-            	<option @if(old('shop') == 'shop 1') selected="selected" @endif value="shop 1">店铺1</option>
-            	<option @if(old('shop') == 'shop 2') selected="selected" @endif value="shop 2">店铺2</option>
-            	<option @if(old('shop') == 'shop 3') selected="selected" @endif value="shop 3">店铺3</option>
-            	<option @if(old('shop') == 'shop 4') selected="selected" @endif value="shop 4">店铺4</option>
-            	<option @if(old('shop') == 'shop 5') selected="selected" @endif value="shop 5">店铺5</option>
+             	@foreach (Config::get('constants.SHOP') as $k=>$v)
+             		<option @if(old('shop') == $k) selected="selected" @endif value="{{ $k }}">{{ $v }}</option>
+             	@endforeach
             </select>
          </div>
 		<div class="col-sm-4">
@@ -63,9 +61,9 @@
 						//print_r(json_decode($books));
 						if(isset(json_decode($books)->datasets))
 						foreach(json_decode($books)->datasets as $k=>$v){
-							
+						
 					?>
-					<span style="display:inline-block;margin-right:36px;"><em style="width:12px;height:12px;display:inline-block;background:<?php echo $v->pointColor; ?>;"></em> <?php echo $v->sname; ?></span> 
+					<span style="display:inline-block;margin-right:36px;"><em style="width:12px;height:12px;display:inline-block;background:<?php echo $v->pointColor; ?>;"></em> <?php $shiduan = Config::get('constants.SHIDUAN'); echo isset($shiduan[$v->sname])?$shiduan[$v->sname]:未知时段; ?></span> 
 					<?php } ?>
 				</div>
 				<canvas id="myChart" width="1200" height="600"></canvas>
